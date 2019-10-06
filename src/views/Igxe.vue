@@ -5,7 +5,7 @@
       stripe
       border
       :columns="columns"
-      :data="buffData"
+      :data="igxeData"
     >
       <div
         slot="header"
@@ -98,7 +98,7 @@ export default {
       },
       {
         title: '当前在售数量',
-        key: 'sellNum',
+        key: 'igxeSellNum',
         align: 'center',
         sortable: true
       },
@@ -114,15 +114,17 @@ export default {
         width: 130,
         align: 'center',
         render: (h, obj) => {
-          let href = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+          let hrefIgxe = `https://www.igxe.cn/csgo/730?keyword=${obj.row.goodsName}`
+          let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
           return (
             <div className="opt-div">
-              <a href={href} target="_blank">去buff</a>
+              <a href={hrefIgxe} target="_blank">去igxe </a>
+              <a href={hrefBuff} target="_blank"> 去buff</a>
             </div>)
         }
         // <Button size="small" type="success" onClick={() => this.goSteam(obj.row)}>去steam</Button>
       }],
-      buffData: [],
+      igxeData: [],
       allTime: 0,
       count: 0,
       percent: 0
@@ -171,15 +173,11 @@ export default {
       this.loading = true
       this.IgxeCsgoCanBuy(form).then(data => {
         this.loading = false
-        this.buffData = data
+        this.igxeData = data
       }).catch(err => {
         this.loading = false
         this.$Message.error(err.message || '数据加载失败')
       })
-    },
-    goBuff (obj) {
-      const url = `https://buff.163.com/market/goods?goods_id=${obj.buffId}&from=market#tab=selling`
-      window.open(url, '_blank')
     },
     goSteam (obj) {
       const url = `https://buff.163.com/market/goods?goods_id=${obj.buffId}&from=market#tab=selling`
