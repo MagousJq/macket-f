@@ -23,5 +23,21 @@ export default {
    */
   getSell (options) {
     return ajax.get('/dota/canSell', options)
+  },
+  /**
+   * igxe导csgo商品
+   * @param {Object} options
+   * @returns
+   */
+  postIgxeStore (options) {
+    return ajax.post('/igxe/dota/store', options)
+  },
+  /**
+   * igxe值得买
+   * @param {Object} options
+   * @returns
+   */
+  getIgxeBuy (options) {
+    return ajax.get('/igxe/dota/canBuy', options)
   }
 }

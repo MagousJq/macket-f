@@ -8,5 +8,11 @@ export default {
   },
   DotaCanSell ({ commit }, options) {
     return service.getSell(options)
+  },
+  IgxeDotaStore ({ commit }, options) {
+    return service.postIgxeStore(options)
+  },
+  IgxeDotaCanBuy ({ commit }, options) {
+    return service.getIgxeBuy(options)
   }
 }

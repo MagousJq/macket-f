@@ -54,7 +54,7 @@ export default {
       form: {
         name: '',
         minPrice: 0,
-        maxPrice: 2000,
+        maxPrice: 100,
         sellNum: 1
       },
       modal: false

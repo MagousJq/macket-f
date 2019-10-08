@@ -82,6 +82,13 @@ export default {
         title: 'igxe最低售价',
         key: 'igxeMinPrice',
         align: 'center',
+        render: (h, obj) => {
+          let hrefSteam = obj.row.steamMarketUrl
+          return (
+            <div className="opt-div">
+              <a href={hrefSteam} target="_blank">{obj.row.igxeMinPrice}</a>
+            </div>)
+        },
         sortable: true
       },
       {
@@ -111,18 +118,19 @@ export default {
       {
         title: '操作',
         key: 'id',
-        width: 130,
+        width: 210,
         align: 'center',
         render: (h, obj) => {
           let hrefIgxe = `https://www.igxe.cn/csgo/730?keyword=${obj.row.goodsName}`
           let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+          let hrefSteam = obj.row.steamMarketUrl
           return (
             <div className="opt-div">
               <a href={hrefIgxe} target="_blank">去igxe </a>
-              <a href={hrefBuff} target="_blank"> 去buff</a>
+              <a href={hrefBuff} target="_blank">去buff </a>
+              <a href={hrefSteam} target="_blank">去steam</a>
             </div>)
         }
-        // <Button size="small" type="success" onClick={() => this.goSteam(obj.row)}>去steam</Button>
       }],
       igxeData: [],
       allTime: 0,
@@ -178,10 +186,6 @@ export default {
         this.loading = false
         this.$Message.error(err.message || '数据加载失败')
       })
-    },
-    goSteam (obj) {
-      const url = `https://buff.163.com/market/goods?goods_id=${obj.buffId}&from=market#tab=selling`
-      window.open(url, '_blank')
     },
     handleCancle () {
       this.isModalShow = false

@@ -29,7 +29,7 @@
         <Button
           class="contain__buy"
           type="primary"
-          @click="() => handleCanBuy({})"
+          @click="handleCanBuy"
         >
           查询可买
         </Button>
@@ -89,6 +89,13 @@ export default {
         title: 'buff最低售价',
         key: 'buffMinPrice',
         align: 'center',
+        render: (h, obj) => {
+          let hrefSteam = obj.row.steamMarketUrl
+          return (
+            <div className="opt-div">
+              <a href={hrefSteam} target="_blank">{obj.row.buffMinPrice}</a>
+            </div>)
+        },
         sortable: true
       },
       {
@@ -112,16 +119,17 @@ export default {
       {
         title: '操作',
         key: 'id',
-        width: 130,
+        width: 150,
         align: 'center',
         render: (h, obj) => {
           let href = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+          let hrefSteam = obj.row.steamMarketUrl
           return (
             <div className="opt-div">
-              <a href={href} target="_blank">去buff</a>
+              <a href={href} target="_blank">去buff </a>
+              <a href={hrefSteam} target="_blank">去steam</a>
             </div>)
         }
-        // <Button size="small" type="success" onClick={() => this.goSteam(obj.row)}>去steam</Button>
       }],
       buffData: [],
       allTime: 0,
@@ -152,13 +160,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      'CsgoCanBuy',
-      'CsgoCanSell',
-      'CsgoStore'
+      'DotaCanBuy',
+      'DotaCanSell',
+      'DotaStore'
     ]),
     handleStore () {
       this.isRequesting = true
-      this.CsgoStore().then(data => {
+      this.DotaStore().then(data => {
         let min = parseInt(data.time / 60) + 1
         this.allTime = parseInt(data.time + 60)
         this.count = 0
@@ -184,12 +192,9 @@ export default {
         this.$Message.error(err.message || '导入失败')
       })
     },
-    handleOpenQuery () {
-      this.isModalShow = true
-    },
-    handleCanBuy (form) {
+    handleCanBuy (form = {}) {
       this.loading = true
-      this.CsgoCanBuy(form).then(data => {
+      this.DotaCanBuy(form).then(data => {
         this.loading = false
         this.buffData = data
       }).catch(err => {
@@ -199,7 +204,7 @@ export default {
     },
     handleCanSell () {
       this.loading = true
-      this.CsgoCanSell().then(data => {
+      this.DotaCanSell().then(data => {
         this.loading = false
         this.buffData = data
       }).catch(err => {
@@ -207,13 +212,8 @@ export default {
         this.$Message.error(err.message || '数据加载失败')
       })
     },
-    goBuff (obj) {
-      const url = `https://buff.163.com/market/goods?goods_id=${obj.buffId}&from=market#tab=selling`
-      window.open(url, '_blank')
-    },
-    goSteam (obj) {
-      const url = `https://buff.163.com/market/goods?goods_id=${obj.buffId}&from=market#tab=selling`
-      window.open(url, '_blank')
+    handleOpenQuery () {
+      this.isModalShow = true
     },
     handleCancle () {
       this.isModalShow = false

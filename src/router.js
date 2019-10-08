@@ -13,22 +13,27 @@ export default new Router({
       path: '/',
       name: 'home',
       component: getComponent('Shell'),
-      redirect: '/csgo',
+      redirect: '/buffCsgo',
       children: [
         {
-          path: 'csgo',
-          name: 'csgo',
-          component: getComponent('Csgo')
+          path: 'buffCsgo',
+          name: 'buffCsgo',
+          component: getComponent('BuffCsgo')
         },
         {
-          path: 'dota',
-          name: 'dota',
-          component: getComponent('Dota')
+          path: 'buffDota',
+          name: 'buffDota',
+          component: getComponent('BuffDota')
         },
         {
-          path: 'igxe',
-          name: 'igxe',
-          component: getComponent('Igxe')
+          path: 'igxeCsgo',
+          name: 'igxeCsgo',
+          component: getComponent('IgxeCsgo')
+        },
+        {
+          path: 'igxeDota',
+          name: 'igxeDota',
+          component: getComponent('IgxeDota')
         },
         {
           path: 'chart',

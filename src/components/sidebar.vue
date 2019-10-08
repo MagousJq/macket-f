@@ -1,41 +1,48 @@
 <template>
   <Menu
     class="layout-menu"
-    active-name="/csgo"
+    :active-name="activeName"
     theme="dark"
     width="auto"
     :class="menuitemClasses"
   >
     <MenuItem
-      name="/csgo"
-      to="/csgo"
+      name="buffCsgo"
+      to="/buffCsgo"
     >
       <Icon type="logo-steam" />
-      <span>CSGO</span>
+      <span>BUFF-CSGO</span>
     </MenuItem>
     <MenuItem
-      name="/dota"
-      to="/dota"
+      name="buffDota"
+      to="/buffDota"
     >
       <Icon type="logo-steam" />
-      <span>DOTA2</span>
+      <span>BUFF-DOTA2</span>
     </MenuItem>
     <MenuItem
-      name="/igxe"
-      to="/igxe"
+      name="igxeCsgo"
+      to="/igxeCsgo"
     >
       <Icon type="logo-steam" />
-      <span>IGXE</span>
+      <span>IGXE-CSGO</span>
     </MenuItem>
     <MenuItem
-      name="/chart"
+      name="igxeDota"
+      to="/igxeDota"
+    >
+      <Icon type="logo-steam" />
+      <span>IGXE-DOTA2</span>
+    </MenuItem>
+    <MenuItem
+      name="chart"
       to="/chart"
     >
       <Icon type="md-trending-up" />
       <span>数据分析</span>
     </MenuItem>
     <MenuItem
-      name="/testForm"
+      name="testForm"
       to="/testForm"
     >
       <Icon type="md-beer" />
@@ -54,6 +61,20 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  data () {
+    return {
+      activeName: ''
+    }
+  },
+  watch: {
+    '$route.name': {
+      handler (val) {
+        this.activeName = val
+      },
+      immediate: true,
+      deep: true
+    }
   }
 }
 </script>
@@ -62,7 +83,7 @@ export default {
     display: inline-block;
     overflow: hidden;
     padding-left: 5px;
-    width: 69px;
+    width: 110px;
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: bottom;

@@ -10,7 +10,7 @@
       >
         <Input
           v-model="formValidate.name"
-          style="width:90%"
+          style="width:40%"
           type="text"
           placeholder="输入物品名称关键字即可"
         /></Input>
@@ -21,7 +21,7 @@
       >
         <Input
           v-model="formValidate.mail"
-          style="width:90%"
+          style="width:40%"
           type="text"
           placeholder="输入物品名称关键字即可"
         /></Input>
