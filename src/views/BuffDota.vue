@@ -2,6 +2,7 @@
   <div class="contain">
     <Table
       :loading="loading"
+      :height="tableHeight"
       stripe
       border
       :columns="columns"
@@ -19,6 +20,12 @@
         >
           导一把
         </Button>
+        <span
+          v-show="time"
+          class="contain__time"
+        >
+          {{ '导入时间：' + time }}
+        </span>
         <Button
           class="contain__buy"
           type="primary"
@@ -75,18 +82,21 @@ export default {
           </div>)
         }
       }, {
-        title: '物品名称(点击名字复制)',
+        title: '物品名称',
         key: 'goodsName',
         align: 'center',
         render: (h, obj) => {
+          let href = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
           return (<div>
-            <input id={'copy' + obj.row.buffId} style={{ position: 'fixed', top: '-2000px' }} value={obj.row.goodsName} />
-            <span style={{ cursor: 'pointer', color: '#36cfc9' }} class="btn-clip" data-clipboard-target={'#copy' + obj.row.buffId}>{obj.row.goodsName}</span>
+            <a href={href} target="_blank">
+              <input id={'copy' + obj.row.buffId} style={{ position: 'fixed', top: '-2000px' }} value={obj.row.goodsName} />
+              <span style={{ cursor: 'pointer', color: '#36cfc9' }} class="btn-clip" data-clipboard-target={'#copy' + obj.row.buffId}>{obj.row.goodsName}</span>
+            </a>
           </div>)
         }
       },
       {
-        title: 'buff最低售价',
+        title: 'buff售价',
         key: 'buffMinPrice',
         align: 'center',
         render: (h, obj) => {
@@ -99,33 +109,35 @@ export default {
         sortable: true
       },
       {
-        title: 'steam最低售价',
+        title: 'igxe售价',
+        key: 'igxeMinPrice',
+        align: 'center',
+        sortable: true
+      },
+      {
+        title: 'steam售价',
         key: 'steamMinPrice',
         align: 'center',
         sortable: true
       },
       {
-        title: '当前在售数量',
+        title: '当前在售量',
         key: 'sellNum',
         align: 'center',
         sortable: true
       },
       {
-        title: '导入时间',
-        key: 'time',
-        align: 'center',
-        render: (h, obj) => { return (<span>{Util.formatDate(obj.row.time)}</span>) }
-      },
-      {
         title: '操作',
         key: 'id',
-        width: 150,
+        width: 180,
         align: 'center',
         render: (h, obj) => {
+          let hrefIgxe = `https://www.igxe.cn/dota2/570?keyword=${obj.row.goodsName}`
           let href = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
           let hrefSteam = obj.row.steamMarketUrl
           return (
             <div className="opt-div">
+              <a href={hrefIgxe} target="_blank">去igxe </a>
               <a href={href} target="_blank">去buff </a>
               <a href={hrefSteam} target="_blank">去steam</a>
             </div>)
@@ -134,7 +146,13 @@ export default {
       buffData: [],
       allTime: 0,
       count: 0,
-      percent: 0
+      percent: 0,
+      tableHeight: 300
+    }
+  },
+  computed: {
+    time: function () {
+      return this.buffData[0] ? Util.formatDate(this.buffData[0].time) : ''
     }
   },
   created () {
@@ -154,6 +172,7 @@ export default {
       e.clearSelection()
     })
     clipboard.on('error', function () {})
+    this.setTableHeight()
   },
   destroyed () {
     this.$Notice.destroy()
@@ -164,6 +183,14 @@ export default {
       'DotaCanSell',
       'DotaStore'
     ]),
+    /**
+     * 设置表格高度 js控制自适应
+     */
+    setTableHeight () {
+      let windowHeight = window.innerHeight ? window.innerHeight : document.body.clientWidth
+      let height = windowHeight - 84 - 20
+      this.tableHeight = parseInt(height) < 300 ? 300 : height
+    },
     handleStore () {
       this.isRequesting = true
       this.DotaStore().then(data => {
@@ -230,6 +257,11 @@ export default {
 .contain{
   &__table-header{
     text-align: right;
+  }
+  &__time{
+    vertical-align: -2px;
+    font-size: 14px;
+    margin-right: 10px;
   }
   &__store{
     float: left;

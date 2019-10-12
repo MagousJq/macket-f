@@ -53,8 +53,8 @@ export default {
     return {
       form: {
         name: '',
-        minPrice: 0,
-        maxPrice: 100,
+        minPrice: 0.3,
+        maxPrice: 40,
         sellNum: 1
       },
       modal: false
