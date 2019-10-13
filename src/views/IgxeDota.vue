@@ -79,7 +79,7 @@ export default {
         key: 'goodsName',
         align: 'center',
         render: (h, obj) => {
-          let href = `https://www.igxe.cn/csgo/730?keyword=${obj.row.goodsName}`
+          let href = `https://www.igxe.cn/dota2/570?keyword=${obj.row.goodsName}`
           return (<div>
             <a href={href} target="_blank">
               <input id={'copy' + obj.row.buffId} style={{ position: 'fixed', top: '-2000px' }} value={obj.row.goodsName} />
