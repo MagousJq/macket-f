@@ -15,5 +15,8 @@ export default {
   },
   IgxeCsgoCanBuy ({ commit }, options) {
     return service.getIgxeBuy(options)
+  },
+  IgxeCsgoCanUse ({ commit }, options) {
+    return service.getIgxeUse(options)
   }
 }

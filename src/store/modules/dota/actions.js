@@ -14,5 +14,8 @@ export default {
   },
   IgxeDotaCanBuy ({ commit }, options) {
     return service.getIgxeBuy(options)
+  },
+  IgxeDotaCanUse ({ commit }, options) {
+    return service.getIgxeUse(options)
   }
 }

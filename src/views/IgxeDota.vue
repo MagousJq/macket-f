@@ -40,6 +40,13 @@
         >
           查询可买
         </Button>
+        <Button
+          class="contain__buy"
+          type="primary"
+          @click="() => handleCanUse()"
+        >
+          差价利用
+        </Button>
       </div>
     </Table>
     <search-modal
@@ -102,9 +109,38 @@ export default {
         sortable: true
       },
       {
+        title: 'buff求购价',
+        key: 'buffBuyPrice',
+        align: 'center',
+        render: (h, obj) => {
+          let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+          return (
+            <div className="opt-div">
+              <a href={hrefBuff} target="_blank">{obj.row.buffBuyPrice}</a>
+            </div>)
+        },
+        sortable: true
+      },
+      {
+        title: '平台倒卖价',
+        key: 'cs',
+        align: 'center',
+        sortable: true,
+        render: (h, obj) => {
+          return (<div>{(obj.row.buffBuyPrice * 0.975 - obj.row.igxeMinPrice).toFixed(2)}</div>)
+        }
+      },
+      {
         title: 'buff售价',
         key: 'buffMinPrice',
         align: 'center',
+        render: (h, obj) => {
+          let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+          return (
+            <div className="opt-div">
+              <a href={hrefBuff} target="_blank">{obj.row.buffMinPrice}</a>
+            </div>)
+        },
         sortable: true
       },
       {
@@ -174,7 +210,8 @@ export default {
   methods: {
     ...mapActions([
       'IgxeDotaStore',
-      'IgxeDotaCanBuy'
+      'IgxeDotaCanBuy',
+      'IgxeDotaCanUse'
     ]),
     /**
      * 设置表格高度 js控制自适应
@@ -199,7 +236,45 @@ export default {
     },
     handleCanBuy (form) {
       this.loading = true
+      if (this.columns.length >= 9) {
+        this.columns.splice(3, 2)
+      }
       this.IgxeDotaCanBuy(form).then(data => {
+        this.loading = false
+        this.igxeData = data
+      }).catch(err => {
+        this.loading = false
+        this.$Message.error(err.message || '数据加载失败')
+      })
+    },
+    handleCanUse () {
+      this.loading = true
+      if (this.columns.length < 9) {
+        this.columns.splice(3, 0,
+          {
+            title: 'buff求购价',
+            key: 'buffBuyPrice',
+            align: 'center',
+            render: (h, obj) => {
+              let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+              return (
+                <div className="opt-div">
+                  <a href={hrefBuff} target="_blank">{obj.row.buffBuyPrice}</a>
+                </div>)
+            },
+            sortable: true
+          },
+          {
+            title: '平台倒卖价',
+            key: 'cs',
+            align: 'center',
+            sortable: true,
+            render: (h, obj) => {
+              return (<div>{(obj.row.buffBuyPrice * 0.975 - obj.row.igxeMinPrice).toFixed(2)}</div>)
+            }
+          })
+      }
+      this.IgxeDotaCanUse().then(data => {
         this.loading = false
         this.igxeData = data
       }).catch(err => {

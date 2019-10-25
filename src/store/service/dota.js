@@ -39,5 +39,13 @@ export default {
    */
   getIgxeBuy (options) {
     return ajax.get('/igxe/dota/canBuy', options)
+  },
+  /**
+   * igxe和buff求购的差价
+   * @param {Object} options
+   * @returns
+   */
+  getIgxeUse (options) {
+    return ajax.get('/igxe/dota/canUse', options)
   }
 }
