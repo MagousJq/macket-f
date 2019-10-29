@@ -61,7 +61,7 @@
 <script>
 import { mapActions } from 'vuex'
 import ClipboardJS from 'clipboard'
-import searchModal from '@/components/searchModal.vue'
+import searchModal from '@/components/search-modal.vue'
 import Util from '@/utils'
 export default {
   components: {
