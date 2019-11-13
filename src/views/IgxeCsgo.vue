@@ -43,6 +43,14 @@
         <Button
           class="contain__buy"
           type="primary"
+          :disabled="igxeData.length === 0 || disabled"
+          @click="handleGetSteamPrice"
+        >
+          Steam求购价
+        </Button>
+        <Button
+          class="contain__buy"
+          type="primary"
           @click="() => handleCanUse()"
         >
           差价利用
@@ -131,9 +139,22 @@ export default {
         }
       },
       {
+        title: 'steam求购价',
+        key: 'steamBuyPrice',
+        align: 'center',
+        sortable: true
+      },
+      {
         title: 'buff售价',
         key: 'buffMinPrice',
         align: 'center',
+        render: (h, obj) => {
+          let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+          return (
+            <div className="opt-div">
+              <a href={hrefBuff} target="_blank">{obj.row.buffMinPrice}</a>
+            </div>)
+        },
         sortable: true
       },
       {
@@ -169,7 +190,8 @@ export default {
       allTime: 0,
       count: 0,
       percent: 0,
-      tableHeight: 300
+      tableHeight: 300,
+      disabled: false
     }
   },
   computed: {
@@ -203,7 +225,8 @@ export default {
     ...mapActions([
       'IgxeCsgoStore',
       'IgxeCsgoCanBuy',
-      'IgxeCsgoCanUse'
+      'IgxeCsgoCanUse',
+      'PostSteamPrice'
     ]),
     /**
      * 设置表格高度 js控制自适应
@@ -226,9 +249,32 @@ export default {
     handleOpenQuery () {
       this.isModalShow = true
     },
+    handleGetSteamPrice () {
+      this.disabled = true
+      this.igxeData = this.igxeData.filter((item, index) => index < 90)
+      const query = this.igxeData.map((item, index) => {
+        return {
+          index: index,
+          url: item.steamMarketUrl,
+          name: item.goodsName
+        }
+      })
+      this.PostSteamPrice(query).then(data => {
+        data.forEach(item => {
+          this.igxeData[item.index].steamBuyPrice = item.steamBuyPrice
+        })
+        this.igxeData.sort((a, b) => {
+          return b.steamBuyPrice / b.igxeMinPrice - a.steamBuyPrice / a.igxeMinPrice
+        })
+        this.disabled = false
+      }).catch(err => {
+        this.$Message.error(err.message || '获取求购价失败')
+        this.disabled = false
+      })
+    },
     handleCanBuy (form) {
       this.loading = true
-      if (this.columns.length >= 9) {
+      if (this.columns.length >= 10) {
         this.columns.splice(3, 2)
       }
       this.IgxeCsgoCanBuy(form).then(data => {
@@ -241,7 +287,7 @@ export default {
     },
     handleCanUse () {
       this.loading = true
-      if (this.columns.length < 9) {
+      if (this.columns.length < 10) {
         this.columns.splice(3, 0, {
           title: 'buff求购价',
           key: 'buffBuyPrice',
