@@ -8,7 +8,7 @@ import Promise from 'bluebird'
 const baseURL = ''
 const instance = axios.create({
   baseURL: baseURL,
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     // 'Content-Type': 'multipart/form-data'
     // 'Content-Type': 'application/msexcel'

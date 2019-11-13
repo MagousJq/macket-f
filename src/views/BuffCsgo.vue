@@ -42,6 +42,14 @@
           查询可买
         </Button>
         <Button
+          class="contain__buy"
+          type="primary"
+          :disabled="buffData.length === 0 || disabled"
+          @click="handleGetSteamPrice"
+        >
+          Steam求购价
+        </Button>
+        <Button
           class="contain__sell"
           type="primary"
           @click="handleCanSell"
@@ -110,6 +118,12 @@ export default {
         sortable: true
       },
       {
+        title: 'steam求购价',
+        key: 'steamBuyPrice',
+        align: 'center',
+        sortable: true
+      },
+      {
         title: 'steam售价',
         key: 'steamMinPrice',
         align: 'center',
@@ -148,7 +162,8 @@ export default {
       allTime: 0,
       count: 0,
       percent: 0,
-      tableHeight: 300
+      tableHeight: 300,
+      disabled: false
     }
   },
   computed: {
@@ -182,7 +197,8 @@ export default {
     ...mapActions([
       'CsgoCanBuy',
       'CsgoCanSell',
-      'CsgoStore'
+      'CsgoStore',
+      'PostSteamPrice'
     ]),
     /**
      * 设置表格高度 js控制自适应
@@ -222,6 +238,29 @@ export default {
     },
     handleOpenQuery () {
       this.isModalShow = true
+    },
+    handleGetSteamPrice () {
+      this.disabled = true
+      this.buffData = this.buffData.filter((item, index) => index < 90)
+      const query = this.buffData.map((item, index) => {
+        return {
+          index: index,
+          url: item.steamMarketUrl,
+          name: item.goodsName
+        }
+      })
+      this.PostSteamPrice(query).then(data => {
+        data.forEach(item => {
+          this.buffData[item.index].steamBuyPrice = item.steamBuyPrice
+        })
+        this.buffData.sort((a, b) => {
+          return b.steamBuyPrice / b.buffMinPrice - a.steamBuyPrice / a.buffMinPrice
+        })
+        this.disabled = false
+      }).catch(err => {
+        this.$Message.error(err.message || '获取求购价失败')
+        this.disabled = false
+      })
     },
     handleCanBuy (form) {
       this.loading = true
