@@ -117,14 +117,14 @@ export default {
         sortable: true
       },
       {
-        title: 'igxe售价',
-        key: 'igxeMinPrice',
+        title: 'steam求购价',
+        key: 'steamBuyPrice',
         align: 'center',
         sortable: true
       },
       {
-        title: 'steam求购价',
-        key: 'steamBuyPrice',
+        title: 'igxe售价',
+        key: 'igxeMinPrice',
         align: 'center',
         sortable: true
       },
