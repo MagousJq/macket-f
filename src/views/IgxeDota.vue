@@ -48,13 +48,13 @@
         >
           Steam求购价
         </Button>
-        <!-- <Button
+        <Button
           class="contain__buy"
           type="primary"
           @click="() => handleCanUse()"
         >
           差价利用
-        </Button> -->
+        </Button>
       </div>
     </Table>
     <search-modal
@@ -116,28 +116,28 @@ export default {
         },
         sortable: true
       },
-      // {
-      //   title: 'buff求购价',
-      //   key: 'buffBuyPrice',
-      //   align: 'center',
-      //   render: (h, obj) => {
-      //     let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
-      //     return (
-      //       <div className="opt-div">
-      //         <a href={hrefBuff} target="_blank">{obj.row.buffBuyPrice}</a>
-      //       </div>)
-      //   },
-      //   sortable: true
-      // },
-      // {
-      //   title: '平台倒卖价',
-      //   key: 'cs',
-      //   align: 'center',
-      //   sortable: true,
-      //   render: (h, obj) => {
-      //     return (<div>{(obj.row.buffBuyPrice * 0.98 - obj.row.igxeMinPrice).toFixed(2)}</div>)
-      //   }
-      // },
+      {
+        title: 'buff求购价',
+        key: 'buffBuyPrice',
+        align: 'center',
+        render: (h, obj) => {
+          let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+          return (
+            <div className="opt-div">
+              <a href={hrefBuff} target="_blank">{obj.row.buffBuyPrice}</a>
+            </div>)
+        },
+        sortable: true
+      },
+      {
+        title: '平台倒卖价',
+        key: 'cs',
+        align: 'center',
+        sortable: true,
+        render: (h, obj) => {
+          return (<div>{(obj.row.buffBuyPrice * 0.98 - obj.row.igxeMinPrice).toFixed(2)}</div>)
+        }
+      },
       {
         title: 'steam求购价',
         key: 'steamBuyPrice',
