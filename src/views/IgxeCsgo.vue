@@ -285,7 +285,7 @@ export default {
         this.$Message.error(err.message || '数据加载失败')
       })
     },
-    handleCanUse () {
+    handleCanUse (form) {
       this.loading = true
       if (this.columns.length < 10) {
         this.columns.splice(3, 0, {
@@ -311,7 +311,7 @@ export default {
           }
         })
       }
-      this.IgxeCsgoCanUse().then(data => {
+      this.IgxeCsgoCanUse(form).then(data => {
         this.loading = false
         this.igxeData = data
       }).catch(err => {
@@ -324,6 +324,10 @@ export default {
     },
     handleSearch (form) {
       this.isModalShow = false
+      if (form.searchWay === '差价利用') {
+        this.handleCanUse(form)
+        return true
+      }
       this.handleCanBuy(form)
     }
   }

@@ -40,6 +40,12 @@
           :min="1"
         />
       </FormItem>
+      <FormItem>
+        <RadioGroup v-model="form.searchWay">
+          <Radio label="查找可买" />
+          <Radio label="差价利用" />
+        </RadioGroup>
+      </FormItem>
     </Form>
   </Modal>
 </template>
@@ -55,7 +61,8 @@ export default {
         name: '',
         minPrice: 0.3,
         maxPrice: 40,
-        sellNum: 1
+        sellNum: 1,
+        searchWay: '差价利用'
       },
       modal: false
     }
