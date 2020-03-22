@@ -60,6 +60,7 @@
     </Table>
     <search-modal
       :is-modal-show="isModalShow"
+      :form="form"
       @handleCancle="handleCancle"
       @handleSearch="handleSearch"
     />
@@ -80,6 +81,12 @@ export default {
       loading: false,
       isRequesting: false,
       isModalShow: false,
+      form: {
+        name: '',
+        minPrice: 0.2,
+        maxPrice: 400,
+        sellNum: 1
+      },
       columns: [{
         title: '序号',
         key: 'id',

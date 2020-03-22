@@ -59,6 +59,7 @@
     </Table>
     <search-modal
       :is-modal-show="isModalShow"
+      :form="form"
       @handleCancle="handleCancle"
       @handleSearch="handleSearch"
     />
@@ -79,6 +80,13 @@ export default {
       loading: false,
       isRequesting: false,
       isModalShow: false,
+      form: {
+        name: '刀|剑|匕|手套|裹手',
+        minPrice: 0.2,
+        maxPrice: 4000,
+        sellNum: 1,
+        searchWay: '差价利用'
+      },
       columns: [{
         title: '序号',
         key: 'id',

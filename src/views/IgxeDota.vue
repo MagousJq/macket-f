@@ -59,6 +59,7 @@
     </Table>
     <search-modal
       :is-modal-show="isModalShow"
+      :form="form"
       @handleCancle="handleCancle"
       @handleSearch="handleSearch"
     />
@@ -79,6 +80,13 @@ export default {
       loading: false,
       isRequesting: false,
       isModalShow: false,
+      form: {
+        name: '',
+        minPrice: 0.25,
+        maxPrice: 4000,
+        sellNum: 1,
+        searchWay: '差价利用'
+      },
       columns: [{
         title: '序号',
         key: 'id',
@@ -252,7 +260,7 @@ export default {
     },
     handleGetSteamPrice () {
       this.disabled = true
-      this.igxeData = this.igxeData.filter((item, index) => index < 90)
+      this.igxeData = this.igxeData.filter((item, index) => index < 100)
       const query = this.igxeData.map((item, index) => {
         return {
           index: index,

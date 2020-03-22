@@ -40,7 +40,7 @@
           :min="1"
         />
       </FormItem>
-      <FormItem>
+      <FormItem v-if="form.searchWay">
         <RadioGroup v-model="form.searchWay">
           <Radio label="查找可买" />
           <Radio label="差价利用" />
@@ -53,17 +53,22 @@
 <script>
 export default {
   props: {
-    isModalShow: Boolean
+    isModalShow: Boolean,
+    form: {
+      type: Object,
+      default: () => {
+        return {
+          name: '刀|剑|匕|手套|裹手',
+          minPrice: 0.25,
+          maxPrice: 4000,
+          sellNum: 1,
+          searchWay: '差价利用'
+        }
+      }
+    }
   },
   data () {
     return {
-      form: {
-        name: '',
-        minPrice: 0.3,
-        maxPrice: 40,
-        sellNum: 1,
-        searchWay: '差价利用'
-      },
       modal: false
     }
   },

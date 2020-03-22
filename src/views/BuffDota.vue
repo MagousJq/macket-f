@@ -59,6 +59,7 @@
     </Table>
     <search-modal
       :is-modal-show="isModalShow"
+      :form="form"
       @handleCancle="handleCancle"
       @handleSearch="handleSearch"
     />
@@ -79,6 +80,12 @@ export default {
       loading: false,
       isRequesting: false,
       isModalShow: false,
+      form: {
+        name: '',
+        minPrice: 0.2,
+        maxPrice: 1,
+        sellNum: 2
+      },
       columns: [{
         title: '序号',
         key: 'id',
@@ -237,7 +244,7 @@ export default {
     },
     handleGetSteamPrice () {
       this.disabled = true
-      this.buffData = this.buffData.filter((item, index) => index < 90)
+      this.buffData = this.buffData.filter((item, index) => index < 100)
       const query = this.buffData.map((item, index) => {
         return {
           index: index,
