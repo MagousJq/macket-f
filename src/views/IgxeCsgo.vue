@@ -259,26 +259,32 @@ export default {
     },
     handleGetSteamPrice () {
       this.disabled = true
-      this.igxeData = this.igxeData.filter((item, index) => index < 90)
-      const query = this.igxeData.map((item, index) => {
+      this.igxeData = this.igxeData.filter((item, index) => index < 100)
+      let query = this.igxeData.map((item, index) => {
         return {
           index: index,
           url: item.steamMarketUrl,
-          name: item.goodsName
+          name: item.goodsName,
+          steamBuyPrice: item.steamBuyPrice
         }
       })
-      this.PostSteamPrice(query).then(data => {
-        data.forEach(item => {
-          this.igxeData[item.index].steamBuyPrice = item.steamBuyPrice
+      query = query.filter(item => !item.steamBuyPrice)
+      if (query.length > 3) {
+        this.PostSteamPrice(query).then(data => {
+          data.forEach(item => {
+            this.igxeData[item.index].steamBuyPrice = item.steamBuyPrice
+          })
+          this.igxeData.sort((a, b) => {
+            return b.steamBuyPrice / b.igxeMinPrice - a.steamBuyPrice / a.igxeMinPrice
+          })
+          this.disabled = false
+        }).catch(err => {
+          this.$Message.error(err.message || '获取求购价失败')
+          this.disabled = false
         })
-        this.igxeData.sort((a, b) => {
-          return b.steamBuyPrice / b.igxeMinPrice - a.steamBuyPrice / a.igxeMinPrice
-        })
-        this.disabled = false
-      }).catch(err => {
-        this.$Message.error(err.message || '获取求购价失败')
-        this.disabled = false
-      })
+      } else {
+        this.$Message.success('steam价格已经基本都获取到了')
+      }
     },
     handleCanBuy (form) {
       this.loading = true

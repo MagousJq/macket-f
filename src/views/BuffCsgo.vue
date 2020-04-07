@@ -125,6 +125,12 @@ export default {
         sortable: true
       },
       {
+        title: 'buff求购价',
+        key: 'buffBuyPrice',
+        align: 'center',
+        sortable: true
+      },
+      {
         title: 'steam求购价',
         key: 'steamBuyPrice',
         align: 'center',
@@ -249,25 +255,31 @@ export default {
     handleGetSteamPrice () {
       this.disabled = true
       this.buffData = this.buffData.filter((item, index) => index < 100)
-      const query = this.buffData.map((item, index) => {
+      let query = this.buffData.map((item, index) => {
         return {
           index: index,
           url: item.steamMarketUrl,
-          name: item.goodsName
+          name: item.goodsName,
+          steamBuyPrice: item.steamBuyPrice
         }
       })
-      this.PostSteamPrice(query).then(data => {
-        data.forEach(item => {
-          this.buffData[item.index].steamBuyPrice = item.steamBuyPrice
+      query = query.filter(item => !item.steamBuyPrice)
+      if (query.length > 3) {
+        this.PostSteamPrice(query).then(data => {
+          data.forEach(item => {
+            this.buffData[item.index].steamBuyPrice = item.steamBuyPrice
+          })
+          this.buffData.sort((a, b) => {
+            return b.steamBuyPrice / b.buffMinPrice - a.steamBuyPrice / a.buffMinPrice
+          })
+          this.disabled = false
+        }).catch(err => {
+          this.$Message.error(err.message || '获取求购价失败')
+          this.disabled = false
         })
-        this.buffData.sort((a, b) => {
-          return b.steamBuyPrice / b.buffMinPrice - a.steamBuyPrice / a.buffMinPrice
-        })
-        this.disabled = false
-      }).catch(err => {
-        this.$Message.error(err.message || '获取求购价失败')
-        this.disabled = false
-      })
+      } else {
+        this.$Message.success('steam价格已经基本都获取到了')
+      }
     },
     handleCanBuy (form) {
       this.loading = true
