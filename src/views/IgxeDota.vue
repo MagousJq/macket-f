@@ -260,7 +260,7 @@ export default {
     },
     handleGetSteamPrice () {
       this.disabled = true
-      this.igxeData = this.igxeData.filter((item, index) => index < 100)
+      this.igxeData = this.igxeData.filter((item, index) => index < 140)
       let query = this.igxeData.map((item, index) => {
         return {
           index: index,

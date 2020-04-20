@@ -254,7 +254,7 @@ export default {
     },
     handleGetSteamPrice () {
       this.disabled = true
-      this.buffData = this.buffData.filter((item, index) => index < 100)
+      this.buffData = this.buffData.filter((item, index) => index < 180)
       let query = this.buffData.map((item, index) => {
         return {
           index: index,
