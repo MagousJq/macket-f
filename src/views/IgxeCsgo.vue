@@ -271,7 +271,14 @@ export default {
       query = query.filter(item => !item.steamBuyPrice)
       if (query.length > 3) {
         this.PostSteamPrice(query).then(data => {
-          data.forEach(item => {
+          let arr = data.arr
+          if (parseInt(data.err) > 0) {
+            this.$Message['info']({
+              background: true,
+              content: data.err + '条steam商品求购价获取失败'
+            })
+          }
+          arr.forEach(item => {
             this.igxeData[item.index].steamBuyPrice = item.steamBuyPrice
           })
           this.igxeData.sort((a, b) => {
