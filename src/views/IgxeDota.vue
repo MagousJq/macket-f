@@ -273,8 +273,8 @@ export default {
       if (query.length > 3) {
         this.PostSteamPrice(query).then(data => {
           let arr = data.arr
+          this.$Message.destroy()
           if (parseInt(data.err) > 0) {
-            this.$Message.destroy()
             this.$Message['info']({
               background: true,
               content: data.err + '条steam商品求购价获取失败',

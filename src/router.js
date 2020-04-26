@@ -56,6 +56,11 @@ export default new Router({
       path: '/learn',
       name: 'learnVue',
       component: getComponent('LearnVue')
+    },
+    {
+      path: '/swipers',
+      name: 'swipers',
+      component: getComponent('Swiper')
     }
   ]
 })
