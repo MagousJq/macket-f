@@ -39,6 +39,11 @@ export default new Router({
           path: 'chart',
           name: 'chart',
           component: getComponent('Chart')
+        },
+        {
+          path: 'swiper',
+          name: 'swiper',
+          component: getComponent('Swiper')
         }
       ]
     },
@@ -51,11 +56,6 @@ export default new Router({
       path: '/learn',
       name: 'learnVue',
       component: getComponent('LearnVue')
-    },
-    {
-      path: '/testForm',
-      name: 'testForm',
-      component: getComponent('TestForm')
     }
   ]
 })

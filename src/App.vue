@@ -3,7 +3,16 @@
     <router-view />
   </div>
 </template>
+<script>
 
+export default {
+  watch: {
+    '$route.name' (val) {
+      this.$Message.destroy()
+    }
+  }
+}
+</script>
 <style lang="less">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

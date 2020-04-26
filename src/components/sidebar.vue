@@ -42,11 +42,11 @@
       <span>数据分析</span>
     </MenuItem>
     <MenuItem
-      name="testForm"
-      to="/testForm"
+      name="swiper"
+      to="/swiper"
     >
       <Icon type="md-beer" />
-      <span>表单测试</span>
+      <span>轮播图demo</span>
     </MenuItem>
     <!-- <MenuItem name="/admin/charts" to="/admin/charts">
       <Icon to="/admin/charts" type="md-podium" />
