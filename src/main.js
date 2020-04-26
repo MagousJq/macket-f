@@ -14,14 +14,6 @@ Vue.config.productionTip = false
 Vue.use(iView, { locale })
 Vue.use(VCharts)
 
-// const initWaterMark = function () {
-//   window.WaterMark.mark({
-//     text: "江前江前江前江前江前",
-//     zIndex: 9999,
-//     opacity: 0.05
-//   })
-// }
-
 new Vue({
   router,
   store,

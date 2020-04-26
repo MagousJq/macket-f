@@ -191,7 +191,7 @@ export default {
       this.$nextTick(() => {
         window.WaterMark.clear()
         window.WaterMark.mark({
-          text: '江前江前江前江前江前',
+          text: '水印水印水印水印水印水印',
           zIndex: 9999
         })
         this.interval = setInterval(() => {
