@@ -1,6 +1,8 @@
+TabNine:sem
 <template>
   <div>
     <Swiper :list="list" />
+    <img class="box">
   </div>
 </template>
 <script>
@@ -22,3 +24,25 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="less">
+.fat {
+  width: 200px;
+  border: 2px dashed #cd0000;
+
+  .son {
+    display: inline-block;
+    padding: 50%;
+    background-color: gray;
+  }
+}
+
+.box {
+  width:10px;
+  height: 10px;
+  line-height: 120px; background-color: #f0f3f9;
+}
+.content { line-height: 20px; margin: 0 20px; vertical-align: middle;
+  background: blue;
+}
+</style>

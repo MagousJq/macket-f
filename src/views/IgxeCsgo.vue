@@ -143,7 +143,7 @@ export default {
         align: 'center',
         sortable: true,
         render: (h, obj) => {
-          return (<div>{(obj.row.buffBuyPrice * 0.975 - obj.row.igxeMinPrice).toFixed(2)}</div>)
+          return (<div>{((obj.row.buffBuyPrice * 0.975).toFixed(2) - obj.row.igxeMinPrice).toFixed(2)}</div>)
         }
       },
       {
@@ -331,7 +331,7 @@ export default {
           align: 'center',
           sortable: true,
           render: (h, obj) => {
-            return (<div>{(obj.row.buffBuyPrice * 0.975 - obj.row.igxeMinPrice).toFixed(2)}</div>)
+            return (<div>{((obj.row.buffBuyPrice * 0.975).toFixed(2) - obj.row.igxeMinPrice).toFixed(2)}</div>)
           }
         })
       }

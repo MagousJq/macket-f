@@ -37,7 +37,7 @@
         v-for="(item, index) in list"
         :key="index"
         :style="setActiveDot(index)"
-        @mouseover="currentIndex = index"
+        @mouseover="() => handleDotOver(index)"
       />
     </div>
   </div>
@@ -75,7 +75,7 @@ export default {
     },
     interval: {
       type: Number,
-      default: 3000
+      default: 5000
     },
     dots: {
       type: Boolean,
@@ -92,7 +92,9 @@ export default {
   },
   data () {
     return {
+      isDotOver: false,
       currentIndex: 0,
+      listOldClass: [],
       sliderDomList: [],
       timer: null
     }
@@ -129,7 +131,11 @@ export default {
         default:
           className = 'hidden'
       }
-      return this.isClick ? className + ' fast' : className
+      if (this.isDotOver && this.listOldClass[i] && this.listOldClass[i].indexOf('active') > -1) {
+        className = 'hidden noAnime'
+      }
+      this.listOldClass[i] = className
+      return (this.isDotOver || this.isClick) ? className + ' fast' : className
     },
     setBGImg (src) {
       return {
@@ -146,8 +152,9 @@ export default {
     play () {
       this.pause()
       if (this.autoPlay) {
-        this.timer = setInterval(() => {
+        this.timer = setTimeout(() => {
           this.next(false)
+          this.play()
         }, this.interval)
       }
     },
@@ -155,12 +162,22 @@ export default {
       clearInterval(this.timer)
     },
     next (flag) {
+      this.isDotOver = false
       this.isClick = flag
       this.currentIndex = ++this.currentIndex % this.list.length
     },
     prev () {
       this.isClick = true
+      this.isDotOver = false
       this.currentIndex = this.currentIndex === 0 ? this.list.length - 1 : this.currentIndex - 1
+    },
+    handleDotOver (index) {
+      let num = parseInt(this.currentIndex) - parseInt(index)
+      if (num < 0) {
+        num = -num
+      }
+      this.isDotOver = num >= 2 && num !== this.list.length - 1
+      this.currentIndex = index
     },
     onClick (i) {
       if (i === this.currentIndex) {
@@ -182,7 +199,7 @@ export default {
 .slider-container{
   overflow: hidden;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   height: 100%;
   margin: 0 auto;
   text-align: center;
@@ -204,7 +221,7 @@ export default {
       height: 100%;
       border-radius: 8px;
       transition: 600ms all ease-in-out;
-      background-color: #fff;
+      background-color: #ffffff;
       background-repeat: no-repeat;
       background-position: center;
       background-size: inherit;
@@ -227,29 +244,30 @@ export default {
       }
       &.prev{
         left: 0;
-        transform: scale(0.8) translate(-164px, 0);
+        // transform: scale(0.8) translate(-84px, 0);
+        transform: scale(0.8) translate(-700px, 0);
         z-index: 1;
         background-size: auto 300px;
+        transition-delay: 100ms;
       }
       &.next{
         left : 100%;
-        transform: scale(0.8) translate(-882px, 0);
+        // transform: scale(0.8) translate(-916px, 0);
+        transform: scale(0.8) translate(-300px, 0);
         z-index: 1;
         background-size: auto 300px;
+        transition-delay: 100ms;
       }
       &.hidden{
-        opacity: 0;
-        transition: 600ms ease-out;
+        transform: scale(0.9) translate(-440px, 0);
+      }
+      &.noAnime {
+        transition: none !important;
       }
     }
     .fast{
+      transition-delay: 0ms;
       transition: 300ms all ease-in-out;
-      &:before{
-        transition: 300ms all;
-      }
-      &.hidden{
-        transition: 300ms ease-out;
-      }
     }
     i{
       width: 17.5%;
