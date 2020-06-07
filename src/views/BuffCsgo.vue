@@ -50,6 +50,14 @@
           Steam求购价
         </Button>
         <Button
+          class="contain__buy"
+          type="primary"
+          :disabled="storeDisabled"
+          @click="handleGetAva"
+        >
+          载入刀均价
+        </Button>
+        <Button
           class="contain__sell"
           type="primary"
           @click="handleCanSell"
@@ -81,6 +89,7 @@ export default {
       loading: false,
       isRequesting: false,
       isModalShow: false,
+      storeDisabled: false,
       form: {
         name: '',
         minPrice: 0.2,
@@ -211,7 +220,8 @@ export default {
       'CsgoCanBuy',
       'CsgoCanSell',
       'CsgoStore',
-      'PostSteamPrice'
+      'PostSteamPrice',
+      'CsgoGetAavKnife'
     ]),
     /**
      * 设置表格高度 js控制自适应
@@ -308,6 +318,16 @@ export default {
         this.buffData = data
       }).catch(err => {
         this.loading = false
+        this.$Message.error(err.message || '数据加载失败')
+      })
+    },
+    handleGetAva () {
+      this.storeDisabled = true
+      this.CsgoGetAavKnife().then(data => {
+        this.storeDisabled = false
+        this.$Message.success(data.data)
+      }).catch(err => {
+        this.storeDisabled = false
         this.$Message.error(err.message || '数据加载失败')
       })
     },

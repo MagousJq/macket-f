@@ -7,5 +7,13 @@ export default {
    */
   postSteamPrice (options) {
     return ajax.post('/steam/getPrice', options)
+  },
+  /**
+   * 录入刀的均价
+   * @param {Object} options
+   * @returns
+   */
+  csgoGetAavKnife () {
+    return ajax.post('/csgo/storeAavKnife')
   }
 }
