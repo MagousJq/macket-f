@@ -175,7 +175,12 @@ export default {
         title: '刀均价',
         key: 'avaPrice',
         align: 'center',
-        sortable: true
+        sortable: true,
+        render: (h, obj) => {
+          // let exp = parseFloat(obj.row.avaPrice) - parseFloat(obj.row.buffMinPrice)
+          let win = (parseFloat(obj.row.avaPrice) * 0.975 - parseFloat(obj.row.buffMinPrice)).toFixed(2)
+          return (<div>{obj.row.avaPrice}<span style="color: rgb(54, 207, 201)">{'(' + win + ')'}</span></div>)
+        }
       },
       {
         title: '操作',
