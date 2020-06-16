@@ -58,6 +58,14 @@
           载入刀均价
         </Button>
         <Button
+          class="contain__buy"
+          type="primary"
+          :disabled="buyDisabled"
+          @click="handleGetAvaList"
+        >
+          查询刀可买
+        </Button>
+        <Button
           class="contain__sell"
           type="primary"
           @click="handleCanSell"
@@ -164,6 +172,12 @@ export default {
         sortable: true
       },
       {
+        title: '刀均价',
+        key: 'avaPrice',
+        align: 'center',
+        sortable: true
+      },
+      {
         title: '操作',
         key: 'id',
         width: 180,
@@ -185,7 +199,8 @@ export default {
       count: 0,
       percent: 0,
       tableHeight: 300,
-      disabled: false
+      disabled: false,
+      buyDisabled: false
     }
   },
   computed: {
@@ -221,7 +236,8 @@ export default {
       'CsgoCanSell',
       'CsgoStore',
       'PostSteamPrice',
-      'CsgoGetAavKnife'
+      'CsgoGetAavKnife',
+      'CsgoBuyAavKnife'
     ]),
     /**
      * 设置表格高度 js控制自适应
@@ -328,6 +344,16 @@ export default {
         this.$Message.success(data.data)
       }).catch(err => {
         this.storeDisabled = false
+        this.$Message.error(err.message || '数据加载失败')
+      })
+    },
+    handleGetAvaList () {
+      this.buyDisabled = true
+      this.CsgoBuyAavKnife().then(data => {
+        this.buyDisabled = false
+        this.buffData = data.data
+      }).catch(err => {
+        this.buyDisabled = false
         this.$Message.error(err.message || '数据加载失败')
       })
     },

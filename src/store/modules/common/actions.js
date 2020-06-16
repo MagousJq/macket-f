@@ -5,5 +5,8 @@ export default {
   },
   CsgoGetAavKnife ({ commit }) {
     return service.csgoGetAavKnife()
+  },
+  CsgoBuyAavKnife ({ commit }) {
+    return service.CsgoBuyAavKnife()
   }
 }

@@ -15,5 +15,13 @@ export default {
    */
   csgoGetAavKnife () {
     return ajax.post('/csgo/storeAavKnife')
+  },
+  /**
+   * 获取刀的均价
+   * @param {Object} options
+   * @returns
+   */
+  CsgoBuyAavKnife () {
+    return ajax.get('/csgo/buyAavKnife')
   }
 }
