@@ -339,15 +339,15 @@ export default {
     handleValidIP() {
       this.showSpin()
       this.isRequesting = true
-      // this.validIp().then(data => {
-      //   this.$Spin.hide();
-      //   this.isRequesting = false
-      //   this.$Message.info(data)
-      // }).catch(() => {
-      //   this.$Spin.hide();
-      //   this.isRequesting = false
-      //   this.$Message.error('服务端出错')
-      // })
+      this.validIp().then(data => {
+        this.$Spin.hide();
+        this.isRequesting = false
+        this.$Message.info(data)
+      }).catch(() => {
+        this.$Spin.hide();
+        this.isRequesting = false
+        this.$Message.error('服务端出错')
+      })
     },
     handleOpenQuery () {
       this.isModalShow = true
