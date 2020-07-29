@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div
+    <!-- <div
       ref="noprintcnt"
       class="noprint"
     >
@@ -157,10 +157,23 @@
       >
         报告单2
       </div>
-    </div>
+    </div> -->
+    <Upload
+      action="/test"
+      :on-success="onSuccess"
+      multiple
+      :before-upload="handleBeforeUpload"
+      :show-upload-list="false"
+    >
+      <Button icon="ios-cloud-upload-outline">
+        上传文件
+      </Button>
+    </Upload>
   </div>
 </template>
 <script>
+import JSZip from 'jszip'
+import FileSaver from 'file-saver'
 export default {
   data () {
     return {
@@ -176,11 +189,11 @@ export default {
         date: '',
         time: '',
         desc: ''
-      }
+      },
+      file: [],
+      buffer: [],
+      fileName: []
     }
-  },
-  mounted () {
-
   },
   beforeDestroy () {
     clearInterval(this.interval)
@@ -211,6 +224,63 @@ export default {
         this.show = true
       })
     },
+    handleBeforeUpload (file) {
+      this.$Spin.show({
+        render: (h) => {
+          return h('div', [
+            h('Icon', {
+              'class': 'demo-spin-icon-load',
+              props: {
+                type: 'ios-loading',
+                size: 40
+              }
+            }),
+            h('div', '图片处理中')
+          ])
+        }
+      })
+      this.file.push(file)
+      return true
+    },
+    onSuccess (res) {
+      this.file.shift()
+      let buf = Buffer.from(res.data.data)
+      this.buffer.push(buf)
+      this.fileName.push(res.data.name)
+
+      // let blob = new Blob([buf], { type: 'image/png' })
+      // let link = document.createElement('a')
+      // link.href = URL.createObjectURL(blob)
+      // link.download = res.data.name
+      // link.click()
+      if (this.file.length === 0) {
+        this.handleExport()
+      }
+    },
+    async handleExport () {
+      const zip = new JSZip()
+      const cache = {}
+      const promises = []
+      await this.buffer.forEach((item, index) => {
+        const promise = new Promise((resolve, reject) => resolve(item)).then(data => { // 下载文件, 并存成ArrayBuffer对象
+          zip.file(this.fileName[index], data, {
+            binary: true
+          }) // 逐个添加文件
+          cache[this.fileName[index]] = data
+        })
+        promises.push(promise)
+      })
+      Promise.all(promises).then(() => {
+        zip.generateAsync({
+          type: 'blob'
+        }).then(content => { // 生成二进制流
+          FileSaver.saveAs(content, '图片压缩包.zip') // 利用file-saver保存文件
+        })
+      })
+      this.fileName = []
+      this.buffer = []
+      this.$Spin.hide()
+    },
     /**
    * 获取DPI
    * @returns {Array}
@@ -234,6 +304,9 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.content {
+  padding: 20px;
+}
 // 要打印的div 隐藏
 .printcnt{
   visibility: hidden;

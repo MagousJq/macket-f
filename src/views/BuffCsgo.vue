@@ -21,6 +21,20 @@
         >
           导一把
         </Button>
+        <Button
+          class="contain__store"
+          :disabled="isRequesting"
+          @click="handleValidIP"
+        >
+          校验代理IP
+        </Button>
+        <Button
+          class="contain__store"
+          :disabled="isRequesting"
+          @click="handleValidSession"
+        >
+          校验SESSION
+        </Button>
         <span
           v-show="time"
           class="contain__time"
@@ -242,7 +256,9 @@ export default {
       'CsgoStore',
       'PostSteamPrice',
       'CsgoGetAavKnife',
-      'CsgoBuyAavKnife'
+      'CsgoBuyAavKnife',
+      'validSession',
+      'validIp'
     ]),
     /**
      * 设置表格高度 js控制自适应
@@ -255,30 +271,83 @@ export default {
     handleStore () {
       this.isRequesting = true
       this.CsgoStore().then(data => {
-        let min = parseInt(data.time / 60) + 1
-        this.allTime = parseInt(data.time + 60)
-        this.count = 0
-        this.percent = 0
-        this.$Notice.open({
-          title: '通知',
-          render: () => (<div style={{ lineHeight: '25px' }}>
-            <p>{'导入已开始进行，预计' + min + '分钟'}</p>
-            <p style={{ fontWeight: 'bold' }}>建议：导入触发频率请勿过快！！！</p>
-            <Progress percent={parseFloat(this.percent)} />
-          </div>)
-        })
-        let interval = setInterval(() => {
-          if (parseInt(this.count) >= parseInt(this.allTime)) {
-            this.isRequesting = false
-            window.clearInterval(interval)
-          } else {
-            this.count++
-            this.percent = parseFloat(this.count / this.allTime * 100).toFixed(2)
-          }
+        // let min = parseInt(data.time / 60) + 1
+        // this.allTime = parseInt(data.time + 60)
+        // this.count = 0
+        // this.percent = 0
+        // this.$Notice.open({
+        //   title: '通知',
+        //   render: () => (<div style={{ lineHeight: '25px' }}>
+        //     <p>{'导入已开始进行，预计' + min + '分钟'}</p>
+        //     <p style={{ fontWeight: 'bold' }}>建议：导入触发频率请勿过快！！！</p>
+        //     <Progress percent={parseFloat(this.percent)} />
+        //   </div>)
+        // })
+        // let interval = setInterval(() => {
+        //   if (parseInt(this.count) >= parseInt(this.allTime)) {
+        //     this.isRequesting = false
+        //     window.clearInterval(interval)
+        //   } else {
+        //     this.count++
+        //     this.percent = parseFloat(this.count / this.allTime * 100).toFixed(2)
+        //   }
+        // }, 1000)
+        setTimeout(() => {
+          this.isRequesting = false
         }, 1000)
+        this.$Message.success(data)
       }).catch(err => {
+        setTimeout(() => {
+          this.isRequesting = false
+        }, 1000)
         this.$Message.error(err.message || '导入失败')
       })
+    },
+    showSpin(){
+      this.$Spin.show({
+        render: (h) => {
+          return h('div', [
+            h('Icon', {
+              'class': 'demo-spin-icon-load',
+              props: {
+                type: 'ios-loading',
+                size: 28
+              }
+            }),
+            h('div', {
+              domProps:{
+                innerHTML:'<p style="font-size:18px;margin-top: 8px;">去后台查看具体的执行情况</p><p style="font-size:18px;">后台执行完毕，页面会自动恢复</p>'
+              }
+            })
+          ])
+        }
+      })
+    },
+    handleValidSession() {
+      this.showSpin()
+      this.isRequesting = true
+      this.validSession().then(data => {
+        this.$Spin.hide();
+        this.isRequesting = false
+        this.$Message.info(data)
+      }).catch(err => {
+        this.$Spin.hide();
+        this.isRequesting = false
+        this.$Message.error('服务端出错')
+      })
+    },
+    handleValidIP() {
+      this.showSpin()
+      this.isRequesting = true
+      // this.validIp().then(data => {
+      //   this.$Spin.hide();
+      //   this.isRequesting = false
+      //   this.$Message.info(data)
+      // }).catch(() => {
+      //   this.$Spin.hide();
+      //   this.isRequesting = false
+      //   this.$Message.error('服务端出错')
+      // })
     },
     handleOpenQuery () {
       this.isModalShow = true
@@ -373,6 +442,11 @@ export default {
 }
 </script>
 
+<style>
+.demo-spin-icon-load{
+  animation: ani-demo-spin 1s linear infinite;
+}
+</style>
 <style scoped lang="less">
 .contain{
   &__table-header{

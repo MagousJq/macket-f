@@ -7,7 +7,7 @@ module.exports = {
     }
   },
   devServer: {
-    port: 9909,
+    port: 8984,
     proxy: 'http://127.0.0.1:7001'
   },
   productionSourceMap: false

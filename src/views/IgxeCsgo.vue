@@ -20,6 +20,14 @@
         >
           导一把
         </Button>
+        <Button
+          class="contain__store"
+          type="primary"
+          :disabled="isRequesting"
+          @click="handleStoreCheap"
+        >
+          导入95折
+        </Button>
         <span
           v-show="time"
           class="contain__time"
@@ -234,7 +242,8 @@ export default {
       'IgxeCsgoStore',
       'IgxeCsgoCanBuy',
       'IgxeCsgoCanUse',
-      'PostSteamPrice'
+      'PostSteamPrice',
+      'IgxeCsgoCheapStore'
     ]),
     /**
      * 设置表格高度 js控制自适应
@@ -247,6 +256,16 @@ export default {
     handleStore () {
       this.isRequesting = true
       this.IgxeCsgoStore().then((data) => {
+        this.$Message.success(data.data)
+        this.isRequesting = false
+      }).catch((err) => {
+        this.$Message.error(err.message || '导入失败')
+        this.isRequesting = false
+      })
+    },
+    handleStoreCheap () {
+      this.isRequesting = true
+      this.IgxeCsgoCheapStore().then((data) => {
         this.$Message.success(data.data)
         this.isRequesting = false
       }).catch((err) => {

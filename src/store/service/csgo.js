@@ -33,6 +33,14 @@ export default {
     return ajax.post('/igxe/csgo/store', options)
   },
   /**
+   * igxe导csgo折扣商品
+   * @param {Object} options
+   * @returns
+   */
+  postIgxeCheapStore (options) {
+    return ajax.post('/igxe/csgo/cheapstore', options)
+  },
+  /**
    * igxe值得买
    * @param {Object} options
    * @returns
@@ -47,5 +55,21 @@ export default {
    */
   getIgxeUse (options) {
     return ajax.get('/igxe/csgo/canUse', options)
+  },
+  /**
+   * 校验代理ip
+   * @param {Object} options
+   * @returns
+   */
+  validIp (options) {
+    return ajax.get('/csgo/proxy', options)
+  },
+  /**
+   * 校验session
+   * @param {Object} options
+   * @returns
+   */
+  validSession (options) {
+    return ajax.get('/csgo/valid', options)
   }
 }
