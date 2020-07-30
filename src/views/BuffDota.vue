@@ -254,14 +254,12 @@ export default {
         this.PostSteamPrice(query).then(data => {
           let arr = data.arr
           this.$Message.destroy()
-          if (parseInt(data.err) > 0) {
-            this.$Message['info']({
-              background: true,
-              content: data.err + '条steam商品求购价获取失败',
-              duration: 0,
-              closable: true
-            })
-          }
+          this.$Message['info']({
+            background: true,
+            content: '剩余' + data.error + '条steam求购价未获取到',
+            duration: 0,
+            closable: true
+          })
           arr.forEach(item => {
             this.buffData[item.index].steamBuyPrice = item.steamBuyPrice
           })
