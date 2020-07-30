@@ -44,9 +44,7 @@ export default class Util {
     if (method.toUpperCase() === 'POST') {
       options.data = data
     } else {
-      if (!cache) {
-        data._ = new Date().getTime()
-      }
+      data._ = new Date().getTime()
       options.params = data
     }
     if (header) {

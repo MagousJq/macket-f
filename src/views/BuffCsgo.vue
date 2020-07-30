@@ -269,41 +269,52 @@ export default {
       this.tableHeight = parseInt(height) < 300 ? 300 : height
     },
     handleStore () {
-      this.isRequesting = true
-      this.CsgoStore().then(data => {
-        // let min = parseInt(data.time / 60) + 1
-        // this.allTime = parseInt(data.time + 60)
-        // this.count = 0
-        // this.percent = 0
-        // this.$Notice.open({
-        //   title: '通知',
-        //   render: () => (<div style={{ lineHeight: '25px' }}>
-        //     <p>{'导入已开始进行，预计' + min + '分钟'}</p>
-        //     <p style={{ fontWeight: 'bold' }}>建议：导入触发频率请勿过快！！！</p>
-        //     <Progress percent={parseFloat(this.percent)} />
-        //   </div>)
-        // })
-        // let interval = setInterval(() => {
-        //   if (parseInt(this.count) >= parseInt(this.allTime)) {
-        //     this.isRequesting = false
-        //     window.clearInterval(interval)
-        //   } else {
-        //     this.count++
-        //     this.percent = parseFloat(this.count / this.allTime * 100).toFixed(2)
-        //   }
-        // }, 1000)
-        setTimeout(() => {
-          this.isRequesting = false
-        }, 1000)
-        this.$Message.success(data)
-      }).catch(err => {
-        setTimeout(() => {
-          this.isRequesting = false
-        }, 1000)
-        this.$Message.error(err.message || '导入失败')
-      })
+      this.$Modal.confirm({
+        title: '温馨提示',
+        content: '<p>你确定要导入，频率过高易被封号</p>',
+        loading: true,
+        closable: true,
+        onOk: () => {
+          this.$Message.destroy()
+          this.$Modal.remove()
+          this.isRequesting = true
+          this.CsgoStore().then(data => {
+            // let min = parseInt(data.time / 60) + 1
+            // this.allTime = parseInt(data.time + 60)
+            // this.count = 0
+            // this.percent = 0
+            // this.$Notice.open({
+            //   title: '通知',
+            //   render: () => (<div style={{ lineHeight: '25px' }}>
+            //     <p>{'导入已开始进行，预计' + min + '分钟'}</p>
+            //     <p style={{ fontWeight: 'bold' }}>建议：导入触发频率请勿过快！！！</p>
+            //     <Progress percent={parseFloat(this.percent)} />
+            //   </div>)
+            // })
+            // let interval = setInterval(() => {
+            //   if (parseInt(this.count) >= parseInt(this.allTime)) {
+            //     this.isRequesting = false
+            //     window.clearInterval(interval)
+            //   } else {
+            //     this.count++
+            //     this.percent = parseFloat(this.count / this.allTime * 100).toFixed(2)
+            //   }
+            // }, 1000)
+            setTimeout(() => {
+              this.isRequesting = false
+            }, 1000)
+            this.$Message.success(data)
+          }).catch(err => {
+            setTimeout(() => {
+              this.isRequesting = false
+            }, 1000)
+            this.$Message.error(err.message || '导入失败')
+          })
+        }
+      });
     },
     showSpin(){
+      this.$Message.destroy()
       this.$Spin.show({
         render: (h) => {
           return h('div', [
@@ -323,28 +334,38 @@ export default {
         }
       })
     },
-    handleValidSession() {
+    handleValidSession () {
       this.showSpin()
       this.isRequesting = true
       this.validSession().then(data => {
-        this.$Spin.hide();
+        this.$Spin.hide()
         this.isRequesting = false
-        this.$Message.info(data)
-      }).catch(err => {
-        this.$Spin.hide();
+        this.$Message['info']({
+          background: true,
+          content: data,
+          duration: 0,
+          closable: true
+        })
+      }).catch(() => {
+        this.$Spin.hide()
         this.isRequesting = false
         this.$Message.error('服务端出错')
       })
     },
-    handleValidIP() {
+    handleValidIP () {
       this.showSpin()
       this.isRequesting = true
       this.validIp().then(data => {
-        this.$Spin.hide();
+        this.$Spin.hide()
         this.isRequesting = false
-        this.$Message.info(data)
+        this.$Message['info']({
+          background: true,
+          content: data,
+          duration: 0,
+          closable: true
+        })
       }).catch(() => {
-        this.$Spin.hide();
+        this.$Spin.hide()
         this.isRequesting = false
         this.$Message.error('服务端出错')
       })
