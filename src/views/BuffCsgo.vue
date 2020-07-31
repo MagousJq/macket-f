@@ -311,9 +311,9 @@ export default {
             this.$Message.error(err.message || '导入失败')
           })
         }
-      });
+      })
     },
-    showSpin(){
+    showSpin () {
       this.$Message.destroy()
       this.$Spin.show({
         render: (h) => {
@@ -326,8 +326,8 @@ export default {
               }
             }),
             h('div', {
-              domProps:{
-                innerHTML:'<p style="font-size:18px;margin-top: 8px;">去后台查看具体的执行情况</p><p style="font-size:18px;">后台执行完毕，页面会自动恢复</p>'
+              domProps: {
+                innerHTML: '<p style="font-size:18px;margin-top: 8px;">去后台查看具体的执行情况</p><p style="font-size:18px;">后台执行完毕，页面会自动恢复</p>'
               }
             })
           ])
