@@ -63,22 +63,22 @@
         >
           Steam求购价
         </Button>
-        <Button
+        <!-- <Button
           class="contain__buy"
           type="primary"
           :disabled="storeDisabled"
           @click="handleGetAva"
         >
           载入刀均价
-        </Button>
-        <Button
-          class="contain__buy"
+        </Button> -->
+        <!-- <Button
+          class="cont ain__buy"
           type="primary"
           :disabled="buyDisabled"
           @click="handleGetAvaList"
         >
           查询刀可买
-        </Button>
+        </Button> -->
         <Button
           class="contain__sell"
           type="primary"
