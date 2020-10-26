@@ -82,7 +82,7 @@ export default {
       isModalShow: false,
       form: {
         name: '',
-        minPrice: 0.2,
+        minPrice: 0.19,
         maxPrice: 1,
         sellNum: 2
       },

@@ -26,3 +26,10 @@ npm run lint
 export MONGO_PATH=/usr/local/mongodb
 export PATH=$PATH:$MONGO_PATH/bin
 mongod --dbpath /Users/jiangqian/data 
+
+
+let a = document.getElementsByClassName('fl-table')[0].getElementsByTagName('tr')
+for(let i=0;i<a.length;i++){
+  let con = a[i].children[0].innerHTML
+  a[i].children[0].innerHTML = "<a href='http://" + con + " ' target='blank'>" + 'http://' + con +  "</a>"
+}

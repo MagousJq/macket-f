@@ -114,8 +114,8 @@ export default {
       storeDisabled: false,
       form: {
         name: '',
-        minPrice: 0.2,
-        maxPrice: 400,
+        minPrice: 0.18,
+        maxPrice: 100,
         sellNum: 1
       },
       columns: [{

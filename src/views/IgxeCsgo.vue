@@ -63,6 +63,13 @@
         >
           差价利用
         </Button>
+        <Button
+          class="contain__buy"
+          type="primary"
+          @click="() => handleCanUse2()"
+        >
+          真实差价
+        </Button>
       </div>
     </Table>
     <search-modal
@@ -353,6 +360,40 @@ export default {
         })
       }
       this.IgxeCsgoCanUse(form).then(data => {
+        this.loading = false
+        this.igxeData = data
+      }).catch(err => {
+        this.loading = false
+        this.$Message.error(err.message || '数据加载失败')
+      })
+    },
+    handleCanUse2 (form) {
+      this.loading = true
+      if (this.columns.length < 10) {
+        this.columns.splice(3, 0, {
+          title: 'buff求购价',
+          key: 'buffBuyPrice',
+          align: 'center',
+          render: (h, obj) => {
+            let hrefBuff = `https://buff.163.com/market/goods?goods_id=${obj.row.buffId}&from=market#tab=selling`
+            return (
+              <div className="opt-div">
+                <a href={hrefBuff} target="_blank">{obj.row.buffBuyPrice}</a>
+              </div>)
+          },
+          sortable: true
+        },
+        {
+          title: '平台倒卖价',
+          key: 'cs',
+          align: 'center',
+          sortable: true,
+          render: (h, obj) => {
+            return (<div>{((obj.row.buffBuyPrice * 0.975).toFixed(2) - obj.row.igxeMinPrice).toFixed(2)}</div>)
+          }
+        })
+      }
+      this.IgxeCsgoCanUse({ isTrueData: true }).then(data => {
         this.loading = false
         this.igxeData = data
       }).catch(err => {
