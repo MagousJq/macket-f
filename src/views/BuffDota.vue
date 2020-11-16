@@ -131,7 +131,7 @@ export default {
           let steamBuyPrice = obj.row.steamBuyPrice
           return (
             <div>
-              { steamBuyPrice + '(' + steamBuyPrice * 0.875 + ')' }
+              { steamBuyPrice ? steamBuyPrice + '(' + (parseFloat(steamBuyPrice) * 0.875).toFixed(2) + ')' : '' }
             </div>)
         },
         sortable: true
