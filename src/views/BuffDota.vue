@@ -82,7 +82,7 @@ export default {
       isModalShow: false,
       form: {
         name: '',
-        minPrice: 0.19,
+        minPrice: 0.18,
         maxPrice: 1,
         sellNum: 2
       },
@@ -127,6 +127,13 @@ export default {
         title: 'steam求购价',
         key: 'steamBuyPrice',
         align: 'center',
+        render: (h, obj) => {
+          let steamBuyPrice = obj.row.steamBuyPrice
+          return (
+            <div>
+              { steamBuyPrice + '(' + steamBuyPrice * 0.875 + ')' }
+            </div>)
+        },
         sortable: true
       },
       {

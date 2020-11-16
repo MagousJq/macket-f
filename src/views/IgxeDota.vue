@@ -150,6 +150,13 @@ export default {
         title: 'steam求购价',
         key: 'steamBuyPrice',
         align: 'center',
+        render: (h, obj) => {
+          let steamBuyPrice = obj.row.steamBuyPrice
+          return (
+            <div>
+              { steamBuyPrice + '(' + steamBuyPrice * 0.875 + ')' }
+            </div>)
+        },
         sortable: true
       },
       {
