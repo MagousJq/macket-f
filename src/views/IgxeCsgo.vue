@@ -302,7 +302,7 @@ export default {
         }
       })
       query = query.filter(item => !item.steamBuyPrice)
-      if (query.length > 3) {
+      if (query.length) {
         this.PostSteamPrice(query).then(data => {
           let arr = data.arr
           this.$Message.destroy()
